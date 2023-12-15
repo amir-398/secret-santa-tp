@@ -22,7 +22,7 @@ exports.verifyToken = async (req, res, next) => {
           }
         });
       });
-      req.user = payload;
+      const user = (req.user = payload);
       // si le token est reconnu on passe à la suite du code
       next();
     } else {

@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
 
+// user Register
 exports.userRegister = async (req, res) => {
   try {
     let newUser = new User(req.body);
@@ -14,6 +15,7 @@ exports.userRegister = async (req, res) => {
   }
 };
 
+// user Login
 exports.userLogin = async (req, res) => {
   try {
     // On récupère l'utilisateur par email

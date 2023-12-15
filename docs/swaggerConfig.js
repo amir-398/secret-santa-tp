@@ -23,6 +23,14 @@ const swaggerOptions = {
       },
     ],
   },
+  securityDefinitions: {
+    bearerAuth: {
+      type: "apiKey",
+      name: "Authorization",
+      scheme: "bearer",
+      in: "header",
+    },
+  },
   apis: ["./routes/*.js"],
 };
 

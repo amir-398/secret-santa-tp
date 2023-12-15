@@ -3,6 +3,8 @@ const router = express.Router();
 const userController = require("../controllers/userController.js");
 const jwtMiddleware = require("../middlewares/jwtMiddleware.js");
 
+// register user-------------------------------------------
+
 /**
  * @openapi
  * /users/register:
@@ -34,6 +36,8 @@ const jwtMiddleware = require("../middlewares/jwtMiddleware.js");
 
 router.route("/register").post(userController.userRegister);
 
+// login user ------------------------------
+
 /**
  * @openapi
  * /users/login:
@@ -62,12 +66,14 @@ router.route("/register").post(userController.userRegister);
 
 router.route("/login").post(userController.userLogin);
 
+// delete user
+
 /**
  * @openapi
  * /users/{id}:
  *   delete:
  *     summary: Supprime un utilisateur
- *     description: Supprime un utilisateur spécifié par son ID
+ *     description: Supprime un utilisateur spécifié par son ID. Nécessite un token JWT pour l'authentification.
  *     parameters:
  *       - in: path
  *         name: id
@@ -75,14 +81,23 @@ router.route("/login").post(userController.userLogin);
  *         description: ID de l'utilisateur à supprimer
  *         schema:
  *           type: string
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Utilisateur supprimé avec succès
+ *       401:
+ *         description: Non autorisé
  *       404:
  *         description: Utilisateur non trouvé
+ */
+
+/**
+ * @openapi
+ * /users/{id}:
  *   put:
  *     summary: Met à jour un utilisateur
- *     description: Met à jour les informations d'un utilisateur spécifié par son ID
+ *     description: Met à jour les informations d'un utilisateur spécifié par son ID. Nécessite un token JWT pour l'authentification.
  *     parameters:
  *       - in: path
  *         name: id
@@ -103,9 +118,15 @@ router.route("/login").post(userController.userLogin);
  *                 type: string
  *               role:
  *                 type: boolean
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Utilisateur mis à jour avec succès
+ *       400:
+ *         description: Données invalides fournies
+ *       401:
+ *         description: Non autorisé
  *       404:
  *         description: Utilisateur non trouvé
  */

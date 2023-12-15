@@ -15,6 +15,10 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 const userRoute = require("./routes/userRoute");
 app.use("/users", userRoute);
 
+//app use groupRoutee
+const groupRoute = require("./routes/groupRoute");
+app.use("/", groupRoute);
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
