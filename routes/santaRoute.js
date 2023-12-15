@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const stantaController = require("../controllers/santaController");
+const santaController = require("../controllers/santaController");
 /**
  * @openapi
  * /{group_id}:
@@ -20,6 +20,7 @@ const stantaController = require("../controllers/santaController");
  *       500:
  *         description: Erreur serveur
  */
-router.route("/:group_id").post(stantaController.assignRandomPairs);
+router.route("/:group_id").post(santaController.assignRandomPairs);
 
+router.route("groups/:user_id").post(santaController.getAssignedPartner);
 module.exports = router;

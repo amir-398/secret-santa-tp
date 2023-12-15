@@ -39,3 +39,27 @@ function shuffleArray(array) {
   }
   return array;
 }
+
+// get signed user
+exports.getAssignedPartner = async (req, res) => {
+  const userId = req.params.user_id;
+
+  try {
+    // Trouver l'entrée Santa où l'utilisateur est soit user_1 soit user_2
+    const santaPair = await Santa.findOne({
+      $or: [{ user_1: userId }, { user_2: userId }],
+    });
+
+    if (!santaPair) {
+      return res.status(404).json({ message: "Aucune paire trouvée" });
+    }
+
+    // Déterminer le partenaire assigné
+    const assignedPartnerId =
+      santaPair.user_1 === userId ? santaPair.user_2 : santaPair.user_1;
+
+    res.status(200).json({ assignedPartnerId });
+  } catch (error) {
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+};
