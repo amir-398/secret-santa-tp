@@ -19,6 +19,10 @@ app.use("/users", userRoute);
 const groupRoute = require("./routes/groupRoute");
 app.use("/", groupRoute);
 
+// app use StantaRoute
+const santaRoute = require("./routes/santaRoute");
+app.use("/santa", santaRoute);
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
