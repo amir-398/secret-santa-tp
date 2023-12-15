@@ -11,6 +11,7 @@ router.route("/groups").get(groupController.getAllGroups);
 
 router
   .route("/groups/:group_id")
+  .get(membershipController.getAcceptedInvitations)
   .delete(jwtMiddleware.verifyToken, groupController.deleteGroup)
   .put(jwtMiddleware.verifyToken, groupController.modifyNameGroup);
 
@@ -25,4 +26,5 @@ router
 router
   .route("/groups/:group_id/refused")
   .post(jwtMiddleware.verifyToken, membershipController.refuseInvite);
+
 module.exports = router;

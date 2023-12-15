@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
 const Schema = mongoose.Schema;
 
-let userSchema = new Schema({
+let groupeSchema = new Schema({
   admin_id: {
     type: String,
     require: true,
@@ -12,4 +11,4 @@ let userSchema = new Schema({
     require: true,
   },
 });
-module.exports = mongoose.model("Group", userSchema);
+module.exports = mongoose.model("Group", groupeSchema);

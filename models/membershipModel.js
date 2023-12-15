@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
 const Schema = mongoose.Schema;
 
-let userSchema = new Schema({
+let memberGroupSchema = new Schema({
   group_id: {
     type: String,
     required: true,
@@ -20,4 +19,4 @@ let userSchema = new Schema({
     default: null,
   },
 });
-module.exports = mongoose.model("Membership", userSchema);
+module.exports = mongoose.model("Membership", memberGroupSchema);

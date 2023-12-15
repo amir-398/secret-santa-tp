@@ -8,7 +8,6 @@ const Group = require("../models/groupModel");
 exports.inviteUser = async (req, res) => {
   const groupId = req.params.group_id;
   const invitedUserId = req.body.invited_user;
-  console.log(req.user);
   try {
     const group = await Group.findOne({
       _id: groupId,
@@ -46,6 +45,7 @@ exports.inviteUser = async (req, res) => {
     const invitationToken = jwt.sign(invitationPayload, process.env.JWT_KEY, {
       expiresIn: "48h",
     });
+    await newInvitation.save();
     res.status(200).json({
       message: "Utilisateur invité avec succès",
       invitation: newInvitation,
@@ -58,11 +58,71 @@ exports.inviteUser = async (req, res) => {
 
 // accept invitation
 exports.acceptInvite = async (req, res) => {
-  // Logique pour accepter l'invitation
-  // ...
+  const groupId = req.params.group_id;
+  const userId = req.user.id;
+
+  try {
+    const invitation = await Membership.findOne({
+      group_id: groupId,
+      invited_user: userId,
+    });
+    if (!invitation) {
+      return res.status(404).json({ message: "Invitation non trouvée" });
+    }
+
+    // Accepter l'invitation seulement si response n'est pas déjà défini
+    if (invitation.response === null) {
+      invitation.response = true;
+      await invitation.save();
+      res.status(200).json({ message: "Invitation acceptée", invitation });
+    } else {
+      res.status(409).json({ message: "L'invitation a déjà été traitée" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Erreur serveur" });
+  }
 };
 
+// refuse invitation
 exports.refuseInvite = async (req, res) => {
-  // Logique pour refuser l'invitation
-  // ...
+  const groupId = req.params.group_id;
+  const userId = req.user.id;
+
+  try {
+    const invitation = await Membership.findOne({
+      group_id: groupId,
+      invited_user: userId,
+    });
+    if (!invitation) {
+      return res.status(404).json({ message: "Invitation non trouvée" });
+    }
+
+    // Refuser l'invitation seulement si response n'est pas déjà défini
+    if (invitation.response === null) {
+      invitation.response = false;
+      await invitation.save();
+      res.status(200).json({ message: "Invitation refusée", invitation });
+    } else {
+      res.status(409).json({ message: "L'invitation a déjà été traitée" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+};
+
+//recuperer toutes les invitations acceptés
+exports.getAcceptedInvitations = async (req, res) => {
+  const groupId = req.params.group_id;
+  try {
+    const acceptedInvitations = await Membership.find({
+      group_id: groupId,
+      response: true,
+    });
+    console.log(acceptedInvitations);
+    res.status(200).json(acceptedInvitations);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Erreur lors de la récupération des invitations" });
+  }
 };
