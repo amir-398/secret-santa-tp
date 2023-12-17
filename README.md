@@ -12,3 +12,5 @@ un projet crée en nodejs express pour crée des groupes et des binomes pour sec
 4. Créez un fichier `.env`, copiez le contenu de `.env.example` et remplacez les valeurs
 5. Lancez l'application avec cette commande : `npm start`.
 6. Accédez à `http://localhost:3000/` pour visualiser l'interface utilisateur.</s>
+7.utiliser postman pour les endpoints
+9. `https://http://localhost:3000/api-docs` pour la documentation
