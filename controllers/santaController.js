@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Membership = require("../models/membershipModel");
 const Santa = require("../models/santaModel");
-
+const Group = require("../models/groupModel");
 exports.assignRandomPairs = async (req, res) => {
   const groupId = req.params.group_id;
 
@@ -40,18 +40,24 @@ function shuffleArray(array) {
   return array;
 }
 
-// get signed user
+// get assigned user
 exports.getAssignedPartner = async (req, res) => {
-  const userId = req.params.user_id;
-
+  const groupId = req.params.group_id;
+  userId = req.user.id;
   try {
     // Trouver l'entrée Santa où l'utilisateur est soit user_1 soit user_2
     const santaPair = await Santa.findOne({
       $or: [{ user_1: userId }, { user_2: userId }],
+      group_id: groupId,
     });
 
     if (!santaPair) {
       return res.status(404).json({ message: "Aucune paire trouvée" });
+    }
+
+    // Vérifier si l'utilisateur actuel correspond à l'utilisateur de la paire
+    if (userId !== req.user.id.toString()) {
+      return res.status(403).json({ message: "Accès non autorisé" });
     }
 
     // Déterminer le partenaire assigné
@@ -59,6 +65,26 @@ exports.getAssignedPartner = async (req, res) => {
       santaPair.user_1 === userId ? santaPair.user_2 : santaPair.user_1;
 
     res.status(200).json({ assignedPartnerId });
+  } catch (error) {
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+};
+
+// get all groups but only from admin
+exports.getAllBonimes = async (req, res) => {
+  const groupId = req.params.group_id;
+  const adminId = req.user.id; // ID de l'utilisateur extrait du token JWT
+
+  try {
+    // Vérifier si l'utilisateur est l'administrateur du groupe
+    const group = await Group.findById(groupId);
+    if (!group || group.admin_id.toString() !== adminId.toString()) {
+      return res.status(403).json({ message: "Accès non autorisé" });
+    }
+
+    // Récupérer tous les bonimes du groupe
+    const bonimes = await Santa.find({ group_id: groupId });
+    res.status(200).json(bonimes);
   } catch (error) {
     res.status(500).json({ message: "Erreur serveur" });
   }

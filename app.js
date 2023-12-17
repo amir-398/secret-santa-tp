@@ -17,7 +17,7 @@ app.use("/users", userRoute);
 
 //app use groupRoutee
 const groupRoute = require("./routes/groupRoute");
-app.use("/", groupRoute);
+app.use("/groups", groupRoute);
 
 // app use StantaRoute
 const santaRoute = require("./routes/santaRoute");

@@ -30,14 +30,14 @@ router
 
 /**
  * @openapi
- * /groups:
+ * /allGroups:
  *   get:
  *     summary: Liste tous les groupes
  *     responses:
  *       200:
  *         description: Liste des groupes
  */
-router.route("/groups").get(groupController.getAllGroups);
+router.route("/allGroups").get(groupController.getAllGroups);
 
 /**
  * @openapi
@@ -90,14 +90,14 @@ router.route("/groups").get(groupController.getAllGroups);
  *         description: Nom du groupe modifié
  */
 router
-  .route("/groups/:group_id")
+  .route("/:group_id")
   .get(membershipController.getAcceptedInvitations)
   .delete(jwtMiddleware.verifyToken, groupController.deleteGroup)
   .put(jwtMiddleware.verifyToken, groupController.modifyNameGroup);
 
 /**
  * @openapi
- * /groups/{group_id}/invitations:
+ * /{group_id}/invitations:
  *   post:
  *     summary: Invite un utilisateur à rejoindre un groupe
  *     security:
@@ -122,12 +122,12 @@ router
  *         description: Utilisateur invité
  */
 router
-  .route("/groups/:group_id/invitations")
+  .route("/:group_id/invitations")
   .post(jwtMiddleware.verifyToken, membershipController.inviteUser);
 
 /**
  * @openapi
- * /groups/{group_id}/accepted:
+ * /{group_id}/accepted:
  *   post:
  *     summary: Accepte une invitation à rejoindre un groupe
  *     security:
@@ -143,12 +143,12 @@ router
  *         description: Invitation acceptée
  */
 router
-  .route("/groups/:group_id/accepted")
+  .route("/:group_id/accepted")
   .post(jwtMiddleware.verifyToken, membershipController.acceptInvite);
 
 /**
  * @openapi
- * /groups/{group_id}/refused:
+ * /{group_id}/refused:
  *   post:
  *     summary: Refuse une invitation à rejoindre un groupe
  *     security:
@@ -164,7 +164,7 @@ router
  *         description: Invitation refusée
  */
 router
-  .route("/groups/:group_id/refused")
+  .route("/:group_id/refused")
   .post(jwtMiddleware.verifyToken, membershipController.refuseInvite);
 
 module.exports = router;
