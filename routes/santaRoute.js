@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const santaController = require("../controllers/santaController");
 const jwtMiddleware = require("../middlewares/jwtMiddleware.js");
+
+// create binomes
 /**
  * @openapi
  * /{group_id}/create-binomes:
@@ -20,10 +22,14 @@ const jwtMiddleware = require("../middlewares/jwtMiddleware.js");
  *         description: Paires attribuées avec succès
  *       500:
  *         description: Erreur serveur
+ *     tags :
+ *        - Santas
  */
 router
   .route("/:group_id/create-binomes")
   .post(santaController.assignRandomPairs);
+
+//to get my binomes
 
 /**
  * @openapi
@@ -45,11 +51,15 @@ router
  *         description: Utilisateur non autorisé
  *       500:
  *         description: Erreur serveur
+ *     tags :
+ *        - Santas
  */
 
 router
   .route("/:group_id/my_binome")
   .post(jwtMiddleware.verifyToken, santaController.getAssignedPartner);
+
+//see all binomes by admin
 
 /**
  * @openapi
@@ -71,6 +81,8 @@ router
  *         description: Utilisateur non autorisé
  *       500:
  *         description: Erreur serveur
+ *     tags :
+ *        - Santas
  */
 
 router

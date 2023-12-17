@@ -1,7 +1,8 @@
-const mongoose = require("mongoose");
 const Membership = require("../models/membershipModel");
 const Santa = require("../models/santaModel");
 const Group = require("../models/groupModel");
+
+// create binomes
 exports.assignRandomPairs = async (req, res) => {
   const groupId = req.params.group_id;
 

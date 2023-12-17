@@ -32,6 +32,8 @@ const jwtMiddleware = require("../middlewares/jwtMiddleware.js");
  *         description: Utilisateur créé avec succès
  *       400:
  *         description: Erreur de requête
+ *     tags:
+ *      - Users
  */
 
 router.route("/register").post(userController.userRegister);
@@ -62,6 +64,8 @@ router.route("/register").post(userController.userRegister);
  *         description: Connexion réussie, renvoie un token
  *       401:
  *         description: Authentification échouée
+ *     tags:
+ *      - Users
  */
 
 router.route("/login").post(userController.userLogin);
@@ -90,6 +94,8 @@ router.route("/login").post(userController.userLogin);
  *         description: Non autorisé
  *       404:
  *         description: Utilisateur non trouvé
+ *     tags:
+ *      - Users
  */
 
 /**
@@ -129,6 +135,8 @@ router.route("/login").post(userController.userLogin);
  *         description: Non autorisé
  *       404:
  *         description: Utilisateur non trouvé
+ *     tags:
+ *      - Users
  */
 
 router

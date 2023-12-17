@@ -4,9 +4,11 @@ const jwtMiddleware = require("../middlewares/jwtMiddleware.js");
 const groupController = require("../controllers/groupController");
 const membershipController = require("../controllers/membershipController.js");
 
+// create new groupe Route------------------------
+
 /**
  * @openapi
- * /newGroup:
+ * /groups/newGroup:
  *   post:
  *     summary: Crée un nouveau groupe
  *     security:
@@ -23,21 +25,31 @@ const membershipController = require("../controllers/membershipController.js");
  *     responses:
  *       201:
  *         description: Groupe créé
+ *
+ *     tags :
+ *        - Groups
  */
 router
   .route("/newGroup")
   .post(jwtMiddleware.verifyToken, groupController.createGroup);
 
+// get all groups rouuuuute---------------------------------
+
 /**
  * @openapi
- * /allGroups:
+ * /groups/allGroups:
  *   get:
  *     summary: Liste tous les groupes
  *     responses:
  *       200:
  *         description: Liste des groupes
+ *     tags :
+ *        - Groups
+ *
  */
 router.route("/allGroups").get(groupController.getAllGroups);
+
+// accepte , refuse and modifity groups
 
 /**
  * @openapi
@@ -53,6 +65,8 @@ router.route("/allGroups").get(groupController.getAllGroups);
  *     responses:
  *       200:
  *         description: Invitations acceptées
+ *     tags :
+ *        - Groups
  *   delete:
  *     summary: Supprime un groupe spécifique
  *     security:
@@ -66,6 +80,8 @@ router.route("/allGroups").get(groupController.getAllGroups);
  *     responses:
  *       200:
  *         description: Groupe supprimé
+ *     tags :
+ *        - Groups
  *   put:
  *     summary: Modifie le nom d'un groupe
  *     security:
@@ -88,12 +104,16 @@ router.route("/allGroups").get(groupController.getAllGroups);
  *     responses:
  *       200:
  *         description: Nom du groupe modifié
+ *     tags :
+ *        - Groups
  */
 router
   .route("/:group_id")
   .get(membershipController.getAcceptedInvitations)
   .delete(jwtMiddleware.verifyToken, groupController.deleteGroup)
   .put(jwtMiddleware.verifyToken, groupController.modifyNameGroup);
+
+//invite user -------------------------------------------------
 
 /**
  * @openapi
@@ -120,10 +140,14 @@ router
  *     responses:
  *       200:
  *         description: Utilisateur invité
+ *     tags :
+ *        - Groups
  */
 router
   .route("/:group_id/invitations")
   .post(jwtMiddleware.verifyToken, membershipController.inviteUser);
+
+//accepte invitation
 
 /**
  * @openapi
@@ -141,11 +165,14 @@ router
  *     responses:
  *       200:
  *         description: Invitation acceptée
+ *     tags :
+ *        - Groups
  */
 router
   .route("/:group_id/accepted")
   .post(jwtMiddleware.verifyToken, membershipController.acceptInvite);
 
+//refuse invitation
 /**
  * @openapi
  * /{group_id}/refused:
@@ -162,6 +189,8 @@ router
  *     responses:
  *       200:
  *         description: Invitation refusée
+ *     tags :
+ *        - Groups
  */
 router
   .route("/:group_id/refused")
